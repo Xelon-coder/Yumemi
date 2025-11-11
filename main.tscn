@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3 uid="uid://dhrjgdodtih1a"]
+
+[ext_resource type="Script" uid="uid://ohw3g4n8up6k" path="res://Player.cs" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://cxid2yihx1cd" path="res://PlayerBody.cs" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://b66p3qsfcjhfu" path="res://CameraPivot.cs" id="2_h2yge"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0xm2m"]
+height = 2.6999512
+radius = 0.6801758
+
+[node name="Main" type="Node3D"]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Wall_1" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2719421, 1.8399048, -2.5484548)
+use_collision = true
+size = Vector3(9.826843, 4.6798096, 1)
+
+[node name="Gate" type="CSGCylinder3D" parent="CSGCombiner3D/Wall_1"]
+transform = Transform3D(1, 0, 0, 0, 0.020942425, 0.99978065, 0, -0.99978065, 0.020942425, -0.370934, -0.5768583, 0.1574111)
+operation = 2
+radius = 2.0576172
+height = 6.0321655
+sides = 20
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.847171, 1.2052464, 2.745)
+use_collision = true
+size = Vector3(1, 5.9815674, 11.580505)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.764272, -1.0167027, -8.993823)
+use_collision = true
+radius = 2.8413577
+rings = 20
+
+[node name="Floor" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.089531, -0.8639512, -2.7022142)
+use_collision = true
+size = Vector3(25.472458, 0.5415039, 32.962738)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.994476, -0.004290521, -0.10487704, 0.03610204, 0.95218664, 0.30337647, 0.098560885, -0.30548686, 0.94708157, 147.4521, 7.1733494, -139.18054)
+
+[node name="Player" type="Node3D" parent="."]
+script = ExtResource("1_0xm2m")
+
+[node name="PlayerBody" type="CharacterBody3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 0.11923575, 0.992866, 0, -0.992866, 0.11923575, 0, 27.078085, 0.15407562)
+script = ExtResource("1_ig7tw")
+
+[node name="CameraPivot" type="Node3D" parent="Player/PlayerBody"]
+transform = Transform3D(1, 0, 0, 0, 0.11923575, -0.992866, 0, 0.992866, 0.11923575, 0, -3.0756977, -26.90328)
+script = ExtResource("2_h2yge")
+
+[node name="CameraPitch" type="Node3D" parent="Player/PlayerBody/CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.3841858e-07)
+
+[node name="Camera3D" type="Camera3D" parent="Player/PlayerBody/CameraPivot/CameraPitch"]
+transform = Transform3D(1, 0, 0, 0, 0.9992583, 0.038509794, 0, -0.038509794, 0.9992583, -0.21159506, 1.9224892, 0.064487934)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/PlayerBody"]
+transform = Transform3D(1, 0, 0, 0, 0.11923575, -0.992866, 0, 0.992866, 0.11923575, 0, -2.975863, -26.07197)
+shape = SubResource("CylinderShape3D_0xm2m")
+debug_color = Color(0, 0.27450982, 0.3254902, 1)

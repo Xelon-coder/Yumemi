@@ -5,6 +5,12 @@ const SPEED = 5.0
 const JUMP_VELOCITY = 5.5
 const SENSITIVITY = 0.003
 
+const PLAYER_FREQ = 2.0
+const PLAYER_AMP = 0.08
+var t_player = 0.0
+
+const OFFSET = 2
+
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
 
@@ -27,6 +33,9 @@ func _physics_process(delta: float) -> void:
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		
+	if Input.is_action_just_pressed("ui_cancel"):
+		get_tree().quit()
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -39,4 +48,14 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
+	# Head player
+	t_player += delta * velocity.length() * float(is_on_floor())
+	camera.transform.origin = _headplayer(t_player)
+
 	move_and_slide()
+
+func _headplayer(time) -> Vector3:
+	var pos = Vector3.ZERO
+	pos.y = sin(time * PLAYER_FREQ) * PLAYER_AMP + OFFSET
+	pos.x = cos(time * PLAYER_FREQ / 2) * PLAYER_AMP
+	return pos
